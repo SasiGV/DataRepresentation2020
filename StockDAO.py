@@ -37,7 +37,7 @@ class StockDAO:
     def create(self, values):
         cursor = self.getCursor()
         sql = "insert into stock (category, name, quantity) values (%s, %s, %s)"
-        #values1 = (category, name, quantity)
+        
         cursor.execute(sql, values)
 
         self.db.commit()
@@ -57,6 +57,39 @@ class StockDAO:
             returnArray.append(self.convertToDictionary(result))
 
         return returnArray
+
+
+    def findByID(self, id):
+        cursor = self.getCursor()
+        sql = "select * from stock where id = %s"
+        values = (id, )
+
+        cursor.execute(sql, values)
+        result = cursor.fetchone()
+        # Format what comes back from db
+        stock = self.convertToDictionary(result)
+
+        cursor.close()  
+        return stock
+
+    def update(self, values):
+        cursor = self.getCursor()
+        sql = "update stock set quantity= %s where id = %s"
+        
+        cursor.execute(sql, values)
+        self.db.commit()
+        print("update done")
+        cursor.close()
+
+    def delete(self, id):
+        cursor = self.getCursor()
+        sql = "delete from stock where id = %s"
+        values = (id, )
+
+        cursor.execute(sql, values)
+        self.db.commit()
+        print("delete done for id", id)
+        cursor.close()        
 
     def convertToDictionary(self, result):
         colnames=['Id','category','Name', "Quantity"]

@@ -174,7 +174,7 @@
             <script>
 
                 function showCreate(){
-                    // When creating a new food:
+                    // When creating a new stock:
                     // Hide AddNewItemButton & stockTable & tableTitle, show createUpdateForm
                     document.getElementById('AddNewItemButton').style.display="none"
                     document.getElementById('StockTable').style.display="none"
@@ -196,9 +196,9 @@
                     document.getElementById('createUpdateForm').style.display="none"
                 }
 
-                function ShowStock(){
-                    getAllAjax();
-                }
+                //function ShowStock(){
+                //    getAllAjax();
+                //}
 
                 function AddNew(){
                     // Activate when adding new Stock Item
@@ -217,6 +217,30 @@
                     document.getElementById('doUpdateButton').style.display="none"
                 }
 
+                function showViewAll(){
+                    document.getElementById('AddNewItemButton').style.display="block"
+                    document.getElementById('StockTable').style.display="block"
+                    document.getElementById('createUpdateForm').style.display="none"
+                }
+
+                function showUpdate(buttonElement){
+                    document.getElementById('tableTitle').style.display="none"
+                    document.getElementById('AddNewItemButton').style.display="none"
+                    document.getElementById('StockTable').style.display="none"
+                    document.getElementById('createUpdateForm').style.display="block"
+                    document.getElementById('createLabel').style.display="none"
+                    document.getElementById('updateLabel').style.display="inline"
+                    document.getElementById('doCreateButton').style.display="none"
+                    document.getElementById('doUpdateButton').style.display="block"
+                    var rowElement = buttonElement.parentNode.parentNode
+                    // these is a way of finding the closest <tr> which would safer, closest()
+                
+                    var stock = getStockFromRow(rowElement)
+                    populateFormWithStock(stock)
+                }
+
+
+
                 function doCreate(){
                     console.log("inside doCreate in form")
                     var form = document.getElementById('createUpdateForm')
@@ -232,6 +256,92 @@
                     createStockAjax(stock)
                     }       
 
+                function doUpdate(){
+                    // calls getStockFromForm and setStockInRow
+                    console.log("inside doUpdate")
+                    var stock = getStockFromForm();
+                    var rowElement = document.getElementById(stock.id);
+
+                    // ajax PUT to server here.
+                    ////////////////////////////////////////////////////////////////
+                    console.log("Update Stock on server now - ajax PUT next line")
+                    console.log(JSON.stringify(stock));
+                    updateStockAjax(stock);
+                        
+                    setStockInRow(rowElement, stock); //table is being updated
+                    clearForm()
+                    showViewAll()
+                }
+                    
+                function doDelete(r){
+                    console.log("delete button in table has been clicked")
+                    var tableElement = document.getElementById('StockTable');
+                    var rowElement = r.parentNode.parentNode;
+                    var index = rowElement.rowIndex;
+
+                    // ajax DELETE from server here.
+                    ////////////////////////////////////////////////////////////////
+                    deleteStockAjax(rowElement.getAttribute("id"));
+
+                    tableElement.deleteRow(index); // table is being updated
+                }
+
+                function clearForm(){
+                    var form = document.getElementById('createUpdateForm')
+                    form.querySelector('select[placeholder="Category"]').value=''
+                    form.querySelector('input[placeholder="Name"]').value=''
+                    form.querySelector('input[placeholder="Quantity"]').value=''
+                }
+
+                function getStockFromRow(rowElement){
+                    // Take a row element and return a Stock object
+                    console.log("inside getStockFromRow")
+                    var stock = {}
+                    //stock.id = rowElement.cells[0].firstChild.textContent
+                    stock.id = rowElement.getAttribute('id')
+                    stock.Category = rowElement.cells[1].firstChild.textContent
+                    stock.Name = rowElement.cells[2].firstChild.textContent
+                    stock.Quantity = parseInt(rowElement.cells[3].firstChild.textContent,10)
+                    return stock
+                    console.log(stock)
+                }
+
+                function setStockInRow(rowElement, stock){
+                    // Take stock and rowEl and pop the row with the stock
+                    rowElement.cells[0].firstChild.textContent= stock.id
+                    rowElement.cells[1].firstChild.textContent= stock.Category
+                    rowElement.cells[2].firstChild.textContent= stock.Name
+                    rowElement.cells[3].firstChild.textContent= stock.Quantity
+                }
+
+                function populateFormWithStock(stock){
+                    var form = document.getElementById('createUpdateForm')
+                    
+                    form.querySelector('input[name="id"]').disabled = true
+                    form.querySelector('input[name="id"]').value = stock.id
+
+                    form.querySelector('select[placeholder="category"]').value = stock.Category
+                    form.querySelector('input[placeholder="name"]').value = stock.Name
+                    form.querySelector('input[placeholder="quantity"]').value = stock.Quantity
+
+                }
+
+                function getStockFromForm(){
+                    // Return a Stock from the form
+                    console.log("in getStockFromForm")
+                    var form = document.getElementById('createUpdateForm')
+                    var stock = {}
+                    stock.id = form.querySelector('input[name="id"]').value
+                    stock.Category = form.querySelector('select[placeholder="category"]').value
+                    stock.Name = form.querySelector('input[placeholder="name"]').value
+                    stock.Quantity = form.querySelector('input[placeholder="quantity"]').value
+                
+                    console.log(JSON.stringify(stock))
+                    return stock
+                }  
+
+
+ 
                     /////////////////////////////////////////////////////////////////////////
                     function createStockAjax(stock){
                         console.log("inside createStockAjax fn")
@@ -281,11 +391,7 @@
                         });
                     }
 
-                    /////////////////////////////////////////////////////////////////////////
-                    getAllAjax(); // Fill table with data from DB
-
-                    /////////////////////////////////////////////////////////////////////////
-
+                   
                     function addStockToTable(stock){
                         var tableElement = document.getElementById('StockTable')
                         var rowElement = tableElement.insertRow(-1)
@@ -312,7 +418,48 @@
                         form.querySelector('input[placeholder="Quantity"]').value=''
                     }
 
-                    getAllAjax();
+                    /////////////////////////////////////////////////////////////////////////
+                    function updateStockAjax(stock){
+                            console.log("inside updateStockAjax fn")
+                            console.log(JSON.stringify(stock));
+                            $.ajax({
+                                "url": host+"/stock/"+encodeURI(stock.id),
+                                //"url": "http://127.0.0.1:5000/stock/"+encodeURI(stock.id),
+                                "method":"PUT",
+                                "data":JSON.stringify(stock),
+                                "dataType": "JSON",
+                                contentType: "application/json; charset=utf-8",
+                                "success":function(result){
+                                    // console.log(result);
+                                
+                                },
+                                "error":function(xhr,status,error){
+                                    console.log("error: "+status+" msg:"+error);
+                                }
+                            });
+                        }
+
+                        /////////////////////////////////////////////////////////////////////////
+                        function deleteStockAjax(id){
+                                console.log("inside deletestockAjax fn")
+                                console.log(JSON.stringify("stock to delete:"+id));
+
+                                $.ajax({
+                                    "url": host+"/stock/"+encodeURI(id),
+                                    //"url": "http://127.0.0.1:5000/stock/"+encodeURI(id),
+                                    "method": "DELETE",
+                                    "data": "",
+                                    "dataType": "JSON",
+                                    contentType: "application/json; charset=utf-8",
+                                    "success": function(result){
+                                        console.log(result);
+                                    },
+                                    "error": function(xhr, status,error){
+                                        console.log("error:"+status+" message:"+error);
+                                    }
+                                });                
+                            }
+                        getAllAjax();
 
             </script>
 
