@@ -25,10 +25,15 @@ desc stock;
 
 
 | Field    | Type         | Null | Key | Default | Extra          |
+
 +----------+--------------+------+-----+---------+----------------+
+
 | id       | int(11)      | NO   | PRI | NULL    | auto_increment |
+
 | category | varchar(50)  | YES  |     | NULL    |                |
+
 | name     | varchar(255) | YES  |     | NULL    |                |
+
 | quantity | int(11)      | YES  |     | NULL    |                |
 
 
