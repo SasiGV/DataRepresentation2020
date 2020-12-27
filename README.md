@@ -22,14 +22,15 @@ MySQL command to create stock table:
 CREATE TABLE Stock (id INT AUTO_INCREMENT PRIMARY KEY, category VARCHAR(50), name VARCHAR(255), quantity INT);
 
 desc stock;
-+----------+--------------+------+-----+---------+----------------+
+
+
 | Field    | Type         | Null | Key | Default | Extra          |
 +----------+--------------+------+-----+---------+----------------+
 | id       | int(11)      | NO   | PRI | NULL    | auto_increment |
 | category | varchar(50)  | YES  |     | NULL    |                |
 | name     | varchar(255) | YES  |     | NULL    |                |
 | quantity | int(11)      | YES  |     | NULL    |                |
-+----------+--------------+------+-----+---------+----------------+
+
 
 ### Web page
 - CSS Bootstrap: buttons, form
