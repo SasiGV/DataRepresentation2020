@@ -74,7 +74,8 @@ class StockDAO:
 
     def update(self, values):
         cursor = self.getCursor()
-        sql = "update stock set quantity= %s where id = %s"
+        print("%s,%s,%s,%s", values)
+        sql = "update stock SET category"+ "= %s, name= %s, quantity= %s where id = %s"
         
         cursor.execute(sql, values)
         self.db.commit()

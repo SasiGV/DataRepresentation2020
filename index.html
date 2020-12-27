@@ -295,10 +295,11 @@
                 function getStockFromRow(rowElement){
                     // Take a row element and return a Stock object
                     console.log("inside getStockFromRow")
+                    console.log(rowElement.cells[1].firstChild.textContent)
                     var stock = {}
                     //stock.id = rowElement.cells[0].firstChild.textContent
                     stock.id = rowElement.getAttribute('id')
-                    stock.Category = rowElement.cells[1].firstChild.textContent
+                    //stock.Category = rowElement.cells[1].firstChild.textContent
                     stock.Name = rowElement.cells[2].firstChild.textContent
                     stock.Quantity = parseInt(rowElement.cells[3].firstChild.textContent,10)
                     return stock

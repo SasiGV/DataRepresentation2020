@@ -1,10 +1,10 @@
 from StockDAO import stockDAO
 
 stock1 = {
-    'id': 8,
+    'id': 16,
     'category': 'Stationary',
     'name': 'HandBook',
-    'quantity': 120
+    'quantity': 500
     }
 
 stock2 = {
@@ -19,12 +19,12 @@ stock2 = {
 
 #returnvalue = stockDAO.getAll()
 #print(returnvalue)
-#returnValue = stockDAO.findByID(stock1['id'])
-#print("find By Id")
-#print(returnValue)
+returnValue = stockDAO.findByID(stock1['id'])
+print("find By Id")
+print(returnValue)
 
-#returnValue= stockDAO.update(stock2['id'])
-#print("Update Stock id 8")
+#returnValue= stockDAO.update(16)
+#print("Update Stock id ", stock1['id'])
 #print(returnValue)
 #returnValue = stockDAO.findByID(stock2['id'])
 #print(returnValue)

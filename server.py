@@ -76,15 +76,25 @@ def update(id):
  
     # Get what was passed up
     reqJson = request.json
-    if 'Quantity' in reqJson and type(reqJson['Quantity']) is not int:
+    if 'Quantity' in reqJson and type(reqJson['quantity']) is not int:
         abort(400)
    
+    Stock = {
+        "Category": request.json['Category'],
+        "Name": request.json['Name'],
+        "Quantity": request.json['Quantity'] 
+        }
+
     # Info to update    
+    #if 'category' in reqJson:
+    #    foundStock['category'] = reqJson['category']
+    #if 'name' in reqJson:
+    #    foundStock['name'] = reqJson['name']
     if 'Quantity' in request.json:
         foundStock['Quantity'] = request.json['Quantity']
 
     # Make the tuple for DB
-    values = ( foundStock['Quantity'], foundStock['id'])
+    values = (Stock['Category'],Stock['Name'],Stock['Quantity'], foundStock['id'])
     # Do the update on DB
     stockDAO.update(values)
     return jsonify(foundStock)
