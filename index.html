@@ -127,13 +127,8 @@
                     <!-- Category part of form -->
                     <div class="form-group">
                     <label for="formInputCategory">Category</label>
-                    <select type="text" class="form-control" id="formInputCategory" placeholder="Category">
-                            <option value="Stationary">Stationary</option>
-                            <option value="Party_Items">Party Items</option>
-                            <option value="Craft_Items">Craft Items</option>
-                            <option value="HomeDec_Items">HomeDec Items</option>
-                            <option value="Kitchen_Items">Kitchen Section</option>
-                            </select><br/>
+                    <input type="text" class="form-control" id="formInputCategory" placeholder="Category"></select>
+                    
                     </div>
                     
                     <!-- Product Name part of form -->
@@ -196,9 +191,7 @@
                     document.getElementById('createUpdateForm').style.display="none"
                 }
 
-                //function ShowStock(){
-                //    getAllAjax();
-                //}
+                
 
                 function AddNew(){
                     // Activate when adding new Stock Item
@@ -228,6 +221,7 @@
                     document.getElementById('AddNewItemButton').style.display="none"
                     document.getElementById('StockTable').style.display="none"
                     document.getElementById('createUpdateForm').style.display="block"
+
                     document.getElementById('createLabel').style.display="none"
                     document.getElementById('updateLabel').style.display="inline"
                     document.getElementById('doCreateButton').style.display="none"
@@ -237,6 +231,7 @@
                 
                     var stock = getStockFromRow(rowElement)
                     populateFormWithStock(stock)
+                    
                 }
 
 
@@ -247,7 +242,7 @@
                     var stock = {}
                     
                     // id - Auto increment done by DB
-                    stock.Category = form.querySelector('select[placeholder="Category"]').value
+                    stock.Category = form.querySelector('input[placeholder="Category"]').value
                     stock.Name = form.querySelector('input[placeholder="Name"]').value
                     stock.Quantity = form.querySelector('input[placeholder="Quantity"]').value
                     
@@ -288,7 +283,7 @@
 
                 function clearForm(){
                     var form = document.getElementById('createUpdateForm')
-                    form.querySelector('select[placeholder="Category"]').value=''
+                    form.querySelector('input[placeholder="Category"]').value=''
                     form.querySelector('input[placeholder="Name"]').value=''
                     form.querySelector('input[placeholder="Quantity"]').value=''
                 }
@@ -318,12 +313,12 @@
                     var form = document.getElementById('createUpdateForm')
                     
                     form.querySelector('input[name="id"]').disabled = true
+
                     form.querySelector('input[name="id"]').value = stock.id
-
-                    form.querySelector('select[placeholder="category"]').value = stock.Category
-                    form.querySelector('input[placeholder="name"]').value = stock.Name
-                    form.querySelector('input[placeholder="quantity"]').value = stock.Quantity
-
+                    form.querySelector('input[placeholder="Category"]').value = stock.Category
+                    form.querySelector('input[placeholder="Name"]').value = stock.Name
+                    form.querySelector('input[placeholder="Quantity"]').value = stock.Quantity
+                    return stock
                 }
 
                 function getStockFromForm(){
@@ -332,15 +327,38 @@
                     var form = document.getElementById('createUpdateForm')
                     var stock = {}
                     stock.id = form.querySelector('input[name="id"]').value
-                    stock.Category = form.querySelector('select[placeholder="category"]').value
-                    stock.Name = form.querySelector('input[placeholder="name"]').value
-                    stock.Quantity = form.querySelector('input[placeholder="quantity"]').value
+                    stock.Category = form.querySelector('input[placeholder="Category"]').value
+                    stock.Name = form.querySelector('input[placeholder="Name"]').value
+                    stock.Quantity = form.querySelector('input[placeholder="Quantity"]').value
                 
                     console.log(JSON.stringify(stock))
                     return stock
                 }  
 
+                function addStockToTable(stock){
+                        var tableElement = document.getElementById('StockTable')
+                        var rowElement = tableElement.insertRow(-1)
+                        rowElement.setAttribute('id',stock.id)
+                        var cell1 = rowElement.insertCell(0);
+                        cell1.innerHTML = stock.id
+                        var cell2 = rowElement.insertCell(1);
+                        cell2.innerHTML = stock.Category
+                        var cell3 = rowElement.insertCell(2);
+                        cell3.innerHTML = stock.Name
+                        var cell4 = rowElement.insertCell(3);
+                        cell4.innerHTML = stock.Quantity
+                        var cell5 = rowElement.insertCell(4);
+                        cell5.innerHTML = '<button type="button" class="btn btn-success" onclick="showUpdate(this)">Update</button>'
+                        var cell6 = rowElement.insertCell(5);
+                        cell6.innerHTML = '<button  type="button" class="btn btn-danger" onclick=doDelete(this)>Delete</button>'
+                    }
 
+                    function clearForm(){
+                        var form = document.getElementById('createUpdateForm')
+                        form.querySelector('input[placeholder="Category"]').value=''
+                        form.querySelector('input[placeholder="Name"]').value=''
+                        form.querySelector('input[placeholder="Quantity"]').value=''
+                    }
  
                     /////////////////////////////////////////////////////////////////////////
                     function createStockAjax(stock){
@@ -372,7 +390,7 @@
                     host = window.location.origin
 
                     function getAllAjax(){
-                        console.log("inside getAllAjax fn")
+                       // console.log("inside getAllAjax fn")
                         $.ajax({
                             "url": host+"/stock",
                             //"url": "http://127.0.0.1:5000/stock",
@@ -392,31 +410,7 @@
                     }
 
                    
-                    function addStockToTable(stock){
-                        var tableElement = document.getElementById('StockTable')
-                        var rowElement = tableElement.insertRow(-1)
-                        rowElement.setAttribute('id',stock.id)
-                        var cell1 = rowElement.insertCell(0);
-                        cell1.innerHTML = stock.id
-                        var cell2 = rowElement.insertCell(1);
-                        cell2.innerHTML = stock.Category
-                        var cell3 = rowElement.insertCell(2);
-                        cell3.innerHTML = stock.Name
-                        var cell4 = rowElement.insertCell(3);
-                        cell4.innerHTML = stock.Quantity
-                        
-                        var cell5 = rowElement.insertCell(4);
-                        cell5.innerHTML = '<button type="button" class="btn btn-success" onclick="showUpdate(this)">Update</button>'
-                        var cell6 = rowElement.insertCell(5);
-                        cell6.innerHTML = '<button  type="button" class="btn btn-danger"onclick=doDelete(this)>Delete</button>'
-                    }
-
-                    function clearForm(){
-                        var form = document.getElementById('createUpdateForm')
-                        form.querySelector('select[placeholder="Category"]').value=''
-                        form.querySelector('input[placeholder="Name"]').value=''
-                        form.querySelector('input[placeholder="Quantity"]').value=''
-                    }
+ 
 
                     /////////////////////////////////////////////////////////////////////////
                     function updateStockAjax(stock){

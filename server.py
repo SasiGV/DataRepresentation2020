@@ -60,7 +60,7 @@ def update(id):
 
     # Find the stock in DB table
     foundStock = stockDAO.findByID(id)
-    
+
     if not foundStock:
         #return "That id does not exist in the database table"
         abort(404)
@@ -75,8 +75,8 @@ def update(id):
         abort(400)
    
     # Info to update    
-    if 'Quantity' in reqJson:
-        foundStock['Quantity'] = reqJson['Quantity']
+    if 'Quantity' in request.json:
+        foundStock['Quantity'] = request.json['Quantity']
 
     # Make the tuple for DB
     values = ( foundStock['Quantity'], foundStock['id'])

@@ -92,7 +92,7 @@ class StockDAO:
         cursor.close()        
 
     def convertToDictionary(self, result):
-        colnames=['Id','category','Name', "Quantity"]
+        colnames=['id','Category','Name', "Quantity"]
         item = {}
         
         if result:
@@ -101,4 +101,5 @@ class StockDAO:
                 item[colName] = value
         
         return item
+
 stockDAO  = StockDAO()
