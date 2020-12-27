@@ -62,7 +62,7 @@ class StockDAO:
     def findByID(self, id):
         cursor = self.getCursor()
         sql = "select * from stock where id = %s"
-        values = (id, )
+        values = (id)
 
         cursor.execute(sql, values)
         result = cursor.fetchone()
