@@ -78,7 +78,7 @@
         <div class="header">
         <h1>Stock Maintenance</h1>
         <h5>Little Princess Store, Monaghan Town, Co-Monahgan</h5>
-        <img src="LP_store.jpg" alt="Little Pricness Store" style="width:600px;height:300px;">
+        <img src="images/LP_store.jpg" alt="Little Pricness Store" style="width:600px;height:300px;">
         </div>    
 
                 
@@ -88,9 +88,6 @@
             <!-- Col 1 -->
             <div class="column left" style="background-color: #f1f1f1">
                 <h2 >Stock Update</h2>
-                <div style="text-align: center;">
-                    <button id="ShowStock" type="button" class="btn btn-primary btn-lg" onclick="ShowStock()">Show Stock</button>
-                </div>
                 <div style="text-align: center;">
                     <button id="AddNewItemButton" type="button" class="btn btn-primary btn-lg" onclick="AddNew()">Add New Product</button>
                 </div>
@@ -127,7 +124,14 @@
                     <!-- Category part of form -->
                     <div class="form-group">
                     <label for="formInputCategory">Category</label>
-                    <input type="text" class="form-control" id="formInputCategory" placeholder="Category"></select>
+                    <select type="text" class="form-control" id="formInputCategory" placeholder="Category">
+                        <option value="Stationary">Stationary</option>
+                        <option value="Party_Items">Party_Items</option>
+                        <option value="Kitchen_Items">Kitchen_Items</option>
+                        <option value="HomeDec_Items">HomeDec_Items</option>
+                        </select><br/>
+
+                   <!-- <input type="text" class="form-control" id="formInputCategory" placeholder="Category"></select> -->
                     
                     </div>
                     
@@ -242,7 +246,7 @@
                     var stock = {}
                     
                     // id - Auto increment done by DB
-                    stock.Category = form.querySelector('input[placeholder="Category"]').value
+                    stock.Category = form.querySelector('select[placeholder="Category"]').value
                     stock.Name = form.querySelector('input[placeholder="Name"]').value
                     stock.Quantity = form.querySelector('input[placeholder="Quantity"]').value
                     
@@ -283,7 +287,7 @@
 
                 function clearForm(){
                     var form = document.getElementById('createUpdateForm')
-                    form.querySelector('input[placeholder="Category"]').value=''
+                    form.querySelector('select[placeholder="Category"]').value=''
                     form.querySelector('input[placeholder="Name"]').value=''
                     form.querySelector('input[placeholder="Quantity"]').value=''
                 }
@@ -315,8 +319,12 @@
                     form.querySelector('input[name="id"]').disabled = true
 
                     form.querySelector('input[name="id"]').value = stock.id
-                    form.querySelector('input[placeholder="Category"]').value = stock.Category
+                    form.querySelector('select[placeholder="Category"]').value = stock.Category
+                    //form.querySelector('input[name="Category"]').prop("readonly", true) 
+
                     form.querySelector('input[placeholder="Name"]').value = stock.Name
+                    //form.querySelector('input[name="Name"]').prop("readonly", true) 
+
                     form.querySelector('input[placeholder="Quantity"]').value = stock.Quantity
                     return stock
                 }
@@ -327,7 +335,7 @@
                     var form = document.getElementById('createUpdateForm')
                     var stock = {}
                     stock.id = form.querySelector('input[name="id"]').value
-                    stock.Category = form.querySelector('input[placeholder="Category"]').value
+                    stock.Category = form.querySelector('select[placeholder="Category"]').value
                     stock.Name = form.querySelector('input[placeholder="Name"]').value
                     stock.Quantity = form.querySelector('input[placeholder="Quantity"]').value
                 
@@ -355,7 +363,7 @@
 
                     function clearForm(){
                         var form = document.getElementById('createUpdateForm')
-                        form.querySelector('input[placeholder="Category"]').value=''
+                        form.querySelector('select[placeholder="Category"]').value=''
                         form.querySelector('input[placeholder="Name"]').value=''
                         form.querySelector('input[placeholder="Quantity"]').value=''
                     }
@@ -454,6 +462,7 @@
                                 });                
                             }
                         getAllAjax();
+                        
 
             </script>
 

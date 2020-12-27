@@ -1,8 +1,13 @@
-from flask import Flask, url_for, request, redirect, abort, jsonify
+from flask import Flask, url_for, request, redirect, abort, jsonify, json
 from StockDAO import stockDAO
+from bs4 import BeautifulSoup
+import requests
+from flask_jsglue import JSGlue
+
+
 
 app  = Flask(__name__, static_url_path='', static_folder='.')
-
+jsglue = JSGlue(app)
 
 ##################################################################
 # GetAll()
@@ -13,7 +18,7 @@ def getAll():
     results = stockDAO.getAll()
     return jsonify(results)
 ##################################################################
-#curl "http://127.0.0.1:5000/books/2"
+#curl "http://127.0.0.1:5000/stock/2"
 @app.route('/stock/<int:id>')
 def findById(id):
     foundStock = stockDAO.findByID(id)
@@ -86,14 +91,14 @@ def update(id):
 
 ##################################################################
 
-# Action = Delete food in DB by ID
-# curl -X DELETE "http://127.0.0.1:5000/foods/1"
+# Action = Delete stock in DB by ID
+# curl -X DELETE "http://127.0.0.1:5000/stock/1"
 
 @app.route('/stock/<int:id>', methods=['DELETE'])
 def delete(id):
     #return "in delete by ID for id "+ str(id)
 
-    # Check if id exists in food table in DB
+    # Check if id exists in stock table in DB
     foundStock = stockDAO.findByID(id)
     if not foundStock:
         #return "That id does not exist in the database table"
@@ -104,6 +109,8 @@ def delete(id):
     return jsonify({"done":True})
 
 #################################################################
+
+
 if __name__ == "__main__":
     print("in if")
     app.run(debug=True)
