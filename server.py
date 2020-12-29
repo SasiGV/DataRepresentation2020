@@ -1,13 +1,13 @@
 from flask import Flask, url_for, request, redirect, abort, jsonify, json
 from StockDAO import stockDAO
 from bs4 import BeautifulSoup
-import requests
-from flask_jsglue import JSGlue
+#import requests
+
 
 
 
 app  = Flask(__name__, static_url_path='', static_folder='.')
-jsglue = JSGlue(app)
+#jsglue = JSGlue(app)
 
 ##################################################################
 # GetAll()
@@ -47,7 +47,8 @@ def create():
     }
 
     # Make the tuple for DB
-    values = (Stock['Category'], Stock['Name'], Stock['Quantity'])
+    #values = (Stock['Category'], Stock['Name'], Stock['Quantity'])
+    values = (request.json['Category'], request.json['Name'], request.json['Quantity'])
     newId = stockDAO.create(values)
     Stock['id'] = newId
 
@@ -58,6 +59,7 @@ def create():
 #
 # Action = Update stock in DB by ID
 # curl -i -H "Content-Type:application/json" -X PUT -d "{\"quantity\":120}" "http://127.0.0.1:5000/stock/1"
+# curl  -i -H "Content-Type:application/json" -X PUT -d "{\"Name\":\"some\",\"Quantity\":123}" http://127.0.0.1:5000/stock/1
 
 @app.route('/stock/<int:id>', methods=['PUT'])
 def update(id):
@@ -73,28 +75,23 @@ def update(id):
     if not request.json:
         abort(400)
 
- 
     # Get what was passed up
     reqJson = request.json
-    if 'Quantity' in reqJson and type(reqJson['quantity']) is not int:
+    if 'Quantity' in reqJson and type(reqJson['Quantity']) is not int:
         abort(400)
    
-    Stock = {
-        "Category": request.json['Category'],
-        "Name": request.json['Name'],
-        "Quantity": request.json['Quantity'] 
-        }
-
+    
     # Info to update    
-    #if 'category' in reqJson:
-    #    foundStock['category'] = reqJson['category']
-    #if 'name' in reqJson:
-    #    foundStock['name'] = reqJson['name']
-    if 'Quantity' in request.json:
-        foundStock['Quantity'] = request.json['Quantity']
+    if 'Category' in reqJson:
+        foundStock['Category'] = reqJson['Category']
+    if 'Name' in reqJson:
+        foundStock['Name'] = reqJson['Name']
+    if 'Quantity' in reqJson:
+        foundStock['Quantity'] = reqJson['Quantity']
 
     # Make the tuple for DB
-    values = (Stock['Category'],Stock['Name'],Stock['Quantity'], foundStock['id'])
+    values = (foundStock['Name'],foundStock['Quantity'], foundStock['id'])
+    
     # Do the update on DB
     stockDAO.update(values)
     return jsonify(foundStock)

@@ -36,6 +36,7 @@ class StockDAO:
 
     def create(self, values):
         cursor = self.getCursor()
+        print("Create Part", values)
         sql = "insert into stock (category, name, quantity) values (%s, %s, %s)"
         
         cursor.execute(sql, values)
@@ -62,7 +63,7 @@ class StockDAO:
     def findByID(self, id):
         cursor = self.getCursor()
         sql = "select * from stock where id = %s"
-        values = (id)
+        values = (id,)
 
         cursor.execute(sql, values)
         result = cursor.fetchone()
@@ -74,8 +75,9 @@ class StockDAO:
 
     def update(self, values):
         cursor = self.getCursor()
-        print("%s,%s,%s,%s", values)
-        sql = "update stock SET category"+ "= %s, name= %s, quantity= %s where id = %s"
+        #print("Values", values)
+        
+        sql = "update stock SET name= %s, quantity= %s where id = %s"
         
         cursor.execute(sql, values)
         self.db.commit()
