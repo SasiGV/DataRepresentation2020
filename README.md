@@ -9,7 +9,7 @@ GiHub repository (public): https://github.com/SasikalaGV/DataRepresentation2020
 - web page: index.html
 - DAO: stockDAO.py
 - DB config to edit dbconfigtemplate.py
-- Virtual environment requirements: requirements.txt
+- Virtual environment requirements: requirement.txt
 - Sample API File: WeatherTestAPI.py [Tried to add an API to show weather condition for a selected county]
 
 ### MySQL database & table
@@ -54,3 +54,13 @@ desc stock;
 - Subscribed to http://api.openweathermap.org/data/2.5/weather? and got the App Key to run the API to get the weather condition for the Store
 - Had an issue with hosting two different hosts and couldn't connect the weather API to the main server.py.
 - In order to test weather API, please run WeatherTestAPI on cmder command prompt
+
+### Server
+
+GiHub repository (public): https://github.com/SasikalaGV/DataRepServer
+- Uploaded the website to PythonAnywhere 
+- server: application.py
+- web page: index.html
+- DAO: stockDAO.py
+- DB config to edit dbconfigtemplate.py
+- Virtual environment requirements: requirement.txt
